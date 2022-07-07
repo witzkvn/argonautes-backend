@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const sailorSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please provide a name."],
+    required: [true, "Merci de fournir un nom"],
   },
 });
 
