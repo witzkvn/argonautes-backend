@@ -19,3 +19,15 @@ exports.createSailor = async (req, res) => {
     },
   });
 };
+
+exports.getAll = async (req, res) => {
+  const allSailors = await Sailor.find();
+
+  return res.status(200).json({
+    status: "success",
+    results: allSailors.length,
+    data: {
+      data: allSailors,
+    },
+  });
+};
