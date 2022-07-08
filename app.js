@@ -12,7 +12,11 @@ const app = express();
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(mongoSanitize());
 app.use(xss());
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://argonautes-wcs-front.herokuapp.com",
+  })
+);
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
