@@ -12,11 +12,19 @@ const app = express();
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(mongoSanitize());
 app.use(xss());
-app.use(
-  cors({
-    origin: "https://argonautes-wcs-front.herokuapp.com",
-  })
-);
+
+const whitelist = ["https://argonautes-wcs-front.herokuapp.com"];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -28,6 +36,13 @@ app.use(express.json());
 app.use("/api/v1/sailors", sailorRouter);
 app.use("/", function (req, res) {
   res.send("Welcome on the Argonautes API !");
+});
+
+app.all("*", (req) => {
+  return res.status(404).json({
+    status: "error",
+    message: `L'URL ${req.originalUrl} n'a pas été trouvé sur ce serveur... Merci d'essayer un autre URL.`,
+  });
 });
 
 module.exports = app;
