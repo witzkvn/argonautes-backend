@@ -27,7 +27,7 @@ exports.getAll = async (req, res) => {
     status: "success",
     results: allSailors.length,
     data: {
-      data: allSailors,
+      sailors: allSailors,
     },
   });
 };
