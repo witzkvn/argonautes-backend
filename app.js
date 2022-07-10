@@ -8,23 +8,16 @@ const sailorRouter = require("./routes/sailorRoutes");
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "https://argonautes-wcs-front.herokuapp.com",
+  })
+);
+
 // Securité
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(mongoSanitize());
 app.use(xss());
-
-const whitelist = ["https://argonautes-wcs-front.herokuapp.com"];
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
-app.use(cors(corsOptions));
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
