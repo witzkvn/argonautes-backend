@@ -8,11 +8,7 @@ const sailorRouter = require("./routes/sailorRoutes");
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "https://argonautes-wcs-front.herokuapp.com",
-  })
-);
+app.use(cors());
 
 // Securité
 app.use(helmet({ contentSecurityPolicy: false }));
